@@ -16,6 +16,17 @@ import util
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
+class LaunchRequestHandler(AbstractRequestHandler):
+    def can_handle(self, handler_input):
+        return ask_utils.is_request_type("LaunchRequest")(handler_input)
+
+    def handle(self, handler_input):
+        speak_output = "Welcome to My Alexa Skill! How can I help you today?"
+        return (
+            handler_input.response_builder.speak(speak_output).response
+        )
+
+
 class RecordColorApiHandler(AbstractRequestHandler):
     def can_handle(self, handler_input):
         # type: (HandlerInput) -> bool
@@ -196,6 +207,7 @@ sb = SkillBuilder()
 
 # register request / intent handlers
 sb.add_request_handler(RecordColorApiHandler())
+sb.add_request_handler(LaunchRequestHandler())
 sb.add_request_handler(GetFavoriteColorApiHandler())
 sb.add_request_handler(IntroToAlexaConversationsButtonEventHandler())
 sb.add_request_handler(SessionEndedRequestHandler())
